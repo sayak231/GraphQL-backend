@@ -1,0 +1,29 @@
+type Query {
+  info: String!
+  feed: [User!]!
+  me: User
+  protected: User!
+}
+
+type Mutation {
+  signup(
+    email: String!
+    password: String!
+    firstname: String!
+    lastname: String!
+  ): AuthPayload
+  login(email: String!, password: String!): AuthPayload
+  revokeRefreshTokensForUser(userId: Int!): Boolean!
+}
+
+type User {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  email: String!
+}
+
+type AuthPayload {
+  accessToken: String
+  user: User
+}
