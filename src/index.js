@@ -70,17 +70,19 @@ const {
   const server = new ApolloServer({
     typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
     resolvers,
-    context: ({ req, res }) => {
-      return {
-        ...req,
-        ...res,
-        prisma,
-        userId: req && req.headers.authorization ? getUserId(req) : null,
-      };
-    },
+    context: ({ req, res }) => ({
+      ...req,
+      ...res,
+      prisma,
+      //userId: req && req.headers.authorization ? getUserId(req) : null,
+    }),
   });
+
+  await server.start();
 
   server.applyMiddleware({ app, cors: false });
 
-  app.listen(4000, () => console.log(`Server is running on 4000`));
+  // server.listen(4000, () => console.log(`Server is running on 4000`));
+  await new Promise((resolve) => app.listen({ port: 4000 }, resolve));
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 })();

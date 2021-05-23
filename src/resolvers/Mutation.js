@@ -14,13 +14,16 @@ async function signup(_, args, context, _) {
   }
   const password = await bcrypt.hash(args.password, 10);
 
-  const user = await context.prisma.users.create({
-    data: { ...args, password },
-  });
+  try {
+    const user = await context.prisma.users.create({
+      data: { ...args, password },
+    });
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
 
-  return {
-    user,
-  };
+  return true;
 }
 
 async function login(_, args, context, _) {
@@ -49,6 +52,12 @@ async function login(_, args, context, _) {
   };
 }
 
+async function logout(_, _, context, _) {
+  sendRefreshToken(context.res, "");
+
+  return true;
+}
+
 async function revokeRefreshTokensForUser(_, args, context, _) {
   const user = await context.prisma.users.findUnique({
     where: {
@@ -70,5 +79,6 @@ async function revokeRefreshTokensForUser(_, args, context, _) {
 module.exports = {
   signup,
   login,
+  logout,
   revokeRefreshTokensForUser,
 };

@@ -2,7 +2,7 @@ type Query {
   info: String!
   feed: [User!]!
   me: User
-  protected: User!
+  protected: User
 }
 
 type Mutation {
@@ -11,8 +11,9 @@ type Mutation {
     password: String!
     firstname: String!
     lastname: String!
-  ): AuthPayload
+  ): Boolean!
   login(email: String!, password: String!): AuthPayload
+  logout: Boolean!
   revokeRefreshTokensForUser(userId: Int!): Boolean!
 }
 

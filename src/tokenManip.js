@@ -16,8 +16,12 @@ const createRefreshToken = (user) => {
 };
 const sendRefreshToken = (res, token) => {
   res.cookie("jid", token, {
+    maxAge: 1000 * 60 * 60 * 24,
     httpOnly: true,
     path: "/refresh_token",
+    Secure: true,
+    SameSite: "None",
+    withCredentials: true,
   });
 };
 
