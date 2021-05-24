@@ -5,11 +5,6 @@ async function feed(_, _, context, _) {
 }
 
 async function me(_, _, context, _) {
-  // if (!context.userId) {
-  //   return null;
-  // }
-
-  //--------------------------------------------------------------------------
   if (context.req) {
     try {
       const authHeader = await context.req.headers.authorization;
@@ -34,28 +29,10 @@ async function me(_, _, context, _) {
       return null;
     }
   }
-
   return null;
-
-  //------------------------------------------------------------------
-
-  // user is authenticated
-  // return await context.prisma.users.findUnique({
-  //   where: {
-  //     id: context.userId,
-  //   },
-  // });
 }
 
 async function protected(_, _, context, _) {
-  // if (!context.userId) {
-  //   throw new Error("You are not authenticated!");
-  // }
-  // return await context.prisma.users.findUnique({
-  //   where: {
-  //     id: context.userId,
-  //   },
-  // });
   if (context.req) {
     try {
       const authHeader = await context.req.headers.authorization;
@@ -79,6 +56,7 @@ async function protected(_, _, context, _) {
       return null;
     }
   }
+  return null;
 }
 
 module.exports = {
