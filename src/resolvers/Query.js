@@ -1,4 +1,37 @@
 const jwt = require("jsonwebtoken");
+const { protectedRoute, getUserId } = require("../utils");
+
+async function getUser(parent, args, context, info) {
+  const userID = await getUserId(context.req);
+  if (isNaN(userID)) {
+    return null;
+  }
+  const returnVal = await context.prisma.users.findUnique({
+    where: {
+      id: userID,
+    },
+    include: {
+      dashboards_created: true,
+    },
+  });
+  return protectedRoute(context, returnVal);
+}
+
+async function getDashboards(parent, args, context, info) {
+  const userID = await getUserId(context.req);
+  if (isNaN(userID)) {
+    return null;
+  }
+  const returnVal = await context.prisma.dashboards.findMany({
+    where: {
+      creator_id: userID,
+    },
+    include: {
+      creator: true,
+    },
+  });
+  return protectedRoute(context, returnVal);
+}
 
 async function feed(_, _, context, _) {
   return await context.prisma.users.findMany();
@@ -60,6 +93,8 @@ async function protected(_, _, context, _) {
 }
 
 module.exports = {
+  getUser,
+  getDashboards,
   feed,
   me,
   protected,

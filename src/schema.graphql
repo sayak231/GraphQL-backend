@@ -3,6 +3,8 @@ type Query {
   feed: [User!]!
   me: User
   protected: User
+  getUser: User
+  getDashboards: [Dashboard!]
 }
 
 type Mutation {
@@ -15,6 +17,20 @@ type Mutation {
   login(email: String!, password: String!): AuthPayload
   logout: Boolean!
   revokeRefreshTokensForUser(userId: Int!): Boolean!
+  createDashboard(
+    name: String!
+    description: String!
+    creator_id: Int
+  ): Dashboard
+  deleteDashboard(id: Int!): Dashboard
+}
+
+type Dashboard {
+  id: ID!
+  name: String!
+  description: String!
+  creator: User!
+  creator_id: Int
 }
 
 type User {
@@ -22,6 +38,7 @@ type User {
   firstname: String!
   lastname: String!
   email: String!
+  dashboards_created: [Dashboard!]!
 }
 
 type AuthPayload {
