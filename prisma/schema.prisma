@@ -30,7 +30,7 @@ model users {
   last_update DateTime? @default(now())
   tokenVersion Int @default(0)
   dashboards_created dashboards[] @relation(name: "creator")
-  dashboards_present_in dashboards[] @relation(name: "manyToMany")
+  dashboards_present_in dashboards[] @relation(name: "manyToMany", references: [id])
   tasks_created tasks[] @relation(name: "created_by")
   tasks_assigned tasks[] @relation(name: "assigned_to")
 }
@@ -53,7 +53,7 @@ model dashboards {
   description String @db.VarChar(255)
   creator users @relation(name: "creator",fields: [creator_id], references: [id])
   creator_id Int
-  members users[] @relation(name: "manyToMany")
+  members users[] @relation(name: "manyToMany",  references: [id])
   members_id Int[]
   tasks_in_dashboard tasks[] @relation(name: "dashboard_belonging_to")
 }
