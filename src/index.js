@@ -74,7 +74,7 @@ const {
       ...req,
       ...res,
       prisma,
-      //userId: req && req.headers.authorization ? getUserId(req) : null,
+      userId: getUserId(req),
     }),
   });
 

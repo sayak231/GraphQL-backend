@@ -15,6 +15,20 @@ type Mutation {
   login(email: String!, password: String!): AuthPayload
   logout: Boolean!
   revokeRefreshTokensForUser(userId: Int!): Boolean!
+  createDashboard(name: String!, description: String!): Dashboard
+  editDashboard(name: String!, description: String!): Dashboard
+  deleteDashboard(id: Int): Dashboard
+  addMembersToDashboard(id: Int, memberId: Int): Dashboard
+  removeMembersFromDashboard(id: Int, memberId: Int): Dashboard
+  createTask(
+    name: String!
+    description: String!
+    assignTo: Int
+    dashboard: Int
+  ): Task
+  deleteTask(id: Int, dashboard: Int): Task
+  editTask(id: Int, name: String!, description: String!, dashboard: Int): Task
+  changeTaskStatus(id: Int, status: Int, dashboard: Int): Task
 }
 
 type User {
@@ -22,9 +36,33 @@ type User {
   firstname: String!
   lastname: String!
   email: String!
+  dashboards_created: [Dashboard!]!
 }
 
 type AuthPayload {
   accessToken: String
   user: User
+}
+
+type Dashboard {
+  id: ID!
+  name: String!
+  description: String!
+  creator: User!
+  creator_id: Int
+  members: [User!]
+  tasks_in_dashboard: String
+}
+
+type Task {
+  id: ID!
+  name: String!
+  description: String!
+  status: Int!
+  created_by: User!
+  created_by_id: Int!
+  assigned_to: User!
+  assigned_to_id: Int!
+  dashboard_belonging_to: Dashboard!
+  dashboard_belonging_to_id: Int!
 }

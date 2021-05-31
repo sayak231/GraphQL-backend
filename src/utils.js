@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 async function protectedRoute(context, returnVal) {
   const user = getUserId(context.req);
-  if (user !== "No token found" || user !== "Not authenticated") {
+  if (!isNaN(user)) {
     return await returnVal;
   }
   return user;
@@ -17,7 +17,7 @@ function getUserId(req, authToken) {
     const authHeader = req.headers.authorization;
     if (authHeader) {
       const token = authHeader.replace("Bearer ", "");
-      if (!token) {
+      if (!token || token.length === 0) {
         return "No token found";
       }
       try {

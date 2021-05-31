@@ -7,20 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model users {
-//   id          Int       @id @default(autoincrement())
-//   firstname   String    @db.VarChar(255)
-//   lastname    String    @db.VarChar(255)
-//   email       String?   @db.VarChar(255) @unique
-//   password    String?   @db.VarChar(255)
-//   last_update DateTime? @default(now())
-//   tokenVersion Int @default(0)
-
-// }
-
-
-//-------------------------------------------------------------------------------------
-
 model users {
   id          Int       @unique @id @default(autoincrement())
   firstname   String    @db.VarChar(255)
@@ -45,6 +31,7 @@ model tasks {
   assigned_to_id Int
   dashboard_belonging_to dashboards @relation(name: "dashboard_belonging_to",fields: [dashboard_belonging_to_id], references:[id])
   dashboard_belonging_to_id Int
+  status Int 
 }
 
 model dashboards {

@@ -5,58 +5,36 @@ async function feed(_, _, context, _) {
 }
 
 async function me(_, _, context, _) {
-  if (context.req) {
-    try {
-      const authHeader = await context.req.headers.authorization;
-      if (authHeader) {
-        const token = authHeader.replace("Bearer ", "");
-        if (!token) {
-          return null;
-        }
-        try {
-          const { userId } = jwt.verify(token, process.env.APP_SECRET);
-          return await context.prisma.users.findUnique({
-            where: {
-              id: userId,
-            },
-          });
-        } catch (error) {
-          return null;
-        }
-      }
-    } catch (e) {
-      console.log(e);
-      return null;
-    }
+  try {
+    const { prisma, userId } = context;
+    if (!isNaN(userId)) {
+      return await prisma.users.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+    } else throw new Error(userId);
+  } catch (error) {
+    throw new Error(error.message);
   }
-  return null;
 }
 
 async function protected(_, _, context, _) {
-  if (context.req) {
-    try {
-      const authHeader = await context.req.headers.authorization;
-      if (authHeader) {
-        const token = authHeader.replace("Bearer ", "");
-        if (!token) {
-          return null;
-        }
-        try {
-          const { userId } = jwt.verify(token, process.env.APP_SECRET);
-          return await context.prisma.users.findUnique({
-            where: {
-              id: userId,
-            },
-          });
-        } catch (err) {
-          return null;
-        }
-      }
-    } catch (e) {
-      return null;
-    }
+  try {
+    const { prisma, userId } = context;
+    if (!isNaN(userId)) {
+      return await prisma.users.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          dashboards_created: true,
+        },
+      });
+    } else throw new Error(userId);
+  } catch (error) {
+    throw new Error(error.message);
   }
-  return null;
 }
 
 module.exports = {
