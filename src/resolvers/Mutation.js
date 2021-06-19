@@ -403,16 +403,29 @@ async function deleteDashboard(parent, args, context, info) {
     if (!dashboard || dashboard.creator_id !== userId) {
       throw new Error("You don't have permission to delete this dashboard");
     }
+    //   if (!isNaN(userId)) {
+    //     try {
+    //       return await prisma.dashboards.delete({
+    //         where: {
+    //           id: args.id,
+    //         },
+    //         include: {
+    //           creator: true,
+    //         },
+    //       });
+    //     } catch (err) {
+    //       throw new Error(err.message);
+    //     }
+    //   } else throw new Error(userId);
+    // } catch (error) {
+    //   throw new Error(error.message);
+    // }
     if (!isNaN(userId)) {
       try {
-        return await prisma.dashboards.delete({
-          where: {
-            id: args.id,
-          },
-          include: {
-            creator: true,
-          },
-        });
+        const result =
+          await prisma.$executeRaw`DELETE FROM dashboards WHERE id=${args.id};`;
+        if (result === 1) return args.id;
+        else return 0;
       } catch (err) {
         throw new Error(err.message);
       }

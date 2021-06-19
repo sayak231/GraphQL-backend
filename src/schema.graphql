@@ -3,6 +3,8 @@ type Query {
   feed: [User!]!
   me: User
   protected: User
+  getDashboards: [Dashboard]
+  getDashboardDetails(id: Int): Dashboard
 }
 
 type Mutation {
@@ -17,7 +19,7 @@ type Mutation {
   revokeRefreshTokensForUser(userId: Int!): Boolean!
   createDashboard(name: String!, description: String!): Dashboard
   editDashboard(name: String!, description: String!): Dashboard
-  deleteDashboard(id: Int): Dashboard
+  deleteDashboard(id: Int): Int
   addMembersToDashboard(id: Int, memberId: Int): Dashboard
   removeMembersFromDashboard(id: Int, memberId: Int): Dashboard
   createTask(
@@ -37,6 +39,8 @@ type User {
   lastname: String!
   email: String!
   dashboards_created: [Dashboard!]!
+  dashboards_present_in: [Dashboard!]!
+  tasks_assigned: [Task]
 }
 
 type AuthPayload {
@@ -51,7 +55,8 @@ type Dashboard {
   creator: User!
   creator_id: Int
   members: [User!]
-  tasks_in_dashboard: String
+  tasks_in_dashboard: [Task]
+  isCreated: Boolean
 }
 
 type Task {

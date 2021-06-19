@@ -41,7 +41,6 @@ model dashboards {
   creator users @relation(name: "creator",fields: [creator_id], references: [id])
   creator_id Int
   members users[] @relation(name: "manyToMany",  references: [id])
-  members_id Int[]
   tasks_in_dashboard tasks[] @relation(name: "dashboard_belonging_to")
 }
 
