@@ -5,6 +5,7 @@ type Query {
   protected: User
   getDashboards: [Dashboard]
   getDashboardDetails(id: Int): Dashboard
+  getAllUsers: [User]
 }
 
 type Mutation {

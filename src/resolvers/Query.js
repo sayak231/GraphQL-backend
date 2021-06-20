@@ -22,6 +22,19 @@ async function getDashboards(parent, args, context, info) {
   }
 }
 
+async function getAllUsers(parent, args, context, info) {
+  try {
+    const { prisma, userId } = context;
+    if (!isNaN(userId)) {
+      const data = await prisma.users.findMany();
+
+      return data;
+    } else throw new Error(userId);
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
 async function getDashboardDetails(parent, { id }, context, info) {
   try {
     const { prisma, userId } = context;
@@ -34,6 +47,9 @@ async function getDashboardDetails(parent, { id }, context, info) {
           members: {
             include: {
               tasks_assigned: {
+                include: {
+                  assigned_to: true,
+                },
                 where: {
                   dashboard_belonging_to_id: id,
                 },
@@ -90,6 +106,7 @@ async function protected(_, _, context, _) {
 module.exports = {
   getDashboards,
   getDashboardDetails,
+  getAllUsers,
   feed,
   me,
   protected,
