@@ -17,10 +17,10 @@ const createRefreshToken = (user) => {
 const sendRefreshToken = (res, req, token) => {
   res.cookie("jid", token, {
     maxAge: 1000 * 60 * 60 * 24,
-    httpOnly: true,
+    httpOnly: false,
     domain: ".herokuapp.com",
     path: "/refresh_token",
-    Secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+    secure: true,
     SameSite: "None",
     withCredentials: true,
   });
