@@ -57,6 +57,7 @@ async function getDashboardDetails(parent, { id }, context, info) {
             },
           },
           tasks_in_dashboard: true,
+          creator: true,
         },
       });
       return response;

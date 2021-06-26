@@ -19,7 +19,7 @@ type Mutation {
   logout: Boolean!
   revokeRefreshTokensForUser(userId: Int!): Boolean!
   createDashboard(name: String!, description: String!): Dashboard
-  editDashboard(name: String!, description: String!): Dashboard
+  editDashboard(id: Int!, name: String!, description: String!): Dashboard
   deleteDashboard(id: Int): Int
   addMembersToDashboard(id: Int, memberId: Int): Dashboard
   removeMembersFromDashboard(id: Int, memberId: Int): Dashboard
