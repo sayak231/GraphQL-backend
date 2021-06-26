@@ -76,6 +76,8 @@ const {
       prisma,
       userId: getUserId(req),
     }),
+    introspection: true,
+    playground: true,
   });
 
   await server.start();
