@@ -14,14 +14,13 @@ const createRefreshToken = (user) => {
     }
   );
 };
-const sendRefreshToken = (res, req, token) => {
+const sendRefreshToken = (res, token) => {
   res.cookie("jid", token, {
     maxAge: 1000 * 60 * 60 * 24,
     httpOnly: false,
-    domain: ".herokuapp.com",
     path: "/refresh_token",
     secure: true,
-    SameSite: "None",
+    sameSite: "none",
     withCredentials: true,
   });
 };

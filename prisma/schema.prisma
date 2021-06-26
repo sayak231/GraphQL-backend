@@ -8,40 +8,38 @@ datasource db {
 }
 
 model users {
-  id          Int       @unique @id @default(autoincrement())
-  firstname   String    @db.VarChar(255)
-  lastname    String    @db.VarChar(255)
-  email       String?   @db.VarChar(255) @unique
-  password    String?   @db.VarChar(255)
-  last_update DateTime? @default(now())
-  tokenVersion Int @default(0)
-  dashboards_created dashboards[] @relation(name: "creator")
-  dashboards_present_in dashboards[] @relation(name: "manyToMany", references: [id])
-  tasks_created tasks[] @relation(name: "created_by")
-  tasks_assigned tasks[] @relation(name: "assigned_to")
+  id                    Int          @id @default(autoincrement())
+  firstname             String       @db.VarChar(255)
+  lastname              String       @db.VarChar(255)
+  email                 String?      @unique @db.VarChar(255)
+  password              String?      @db.VarChar(255)
+  last_update           DateTime?    @default(now())
+  tokenVersion          Int          @default(0)
+  dashboards_created    dashboards[] @relation("creator")
+  tasks_assigned        tasks[]      @relation("assigned_to")
+  tasks_created         tasks[]      @relation("created_by")
+  dashboards_present_in dashboards[] @relation("manyToMany")
 }
 
 model tasks {
-  id Int       @unique @id @default(autoincrement())
-  name String    @db.VarChar(255)
-  description       String    @db.VarChar(255)
-  created_by users @relation(name: "created_by",fields: [created_by_id], references: [id])
-  created_by_id Int
-  assigned_to users @relation(name: "assigned_to",fields: [assigned_to_id], references: [id])
-  assigned_to_id Int
-  dashboard_belonging_to dashboards @relation(name: "dashboard_belonging_to",fields: [dashboard_belonging_to_id], references:[id])
+  id                        Int        @id @default(autoincrement())
+  name                      String     @db.VarChar(255)
+  description               String     @db.VarChar(255)
+  created_by_id             Int
+  assigned_to_id            Int
   dashboard_belonging_to_id Int
-  status Int 
+  status                    Int
+  assigned_to               users      @relation("assigned_to", fields: [assigned_to_id], references: [id])
+  created_by                users      @relation("created_by", fields: [created_by_id], references: [id])
+  dashboard_belonging_to    dashboards @relation("dashboard_belonging_to", fields: [dashboard_belonging_to_id], references: [id])
 }
 
 model dashboards {
-  id Int @unique @id @default(autoincrement())
-  name String @db.VarChar(255)
-  description String @db.VarChar(255)
-  creator users @relation(name: "creator",fields: [creator_id], references: [id])
-  creator_id Int
-  members users[] @relation(name: "manyToMany",  references: [id])
-  tasks_in_dashboard tasks[] @relation(name: "dashboard_belonging_to")
+  id                 Int     @id @default(autoincrement())
+  name               String  @db.VarChar(255)
+  description        String  @db.VarChar(255)
+  creator_id         Int
+  creator            users   @relation("creator", fields: [creator_id], references: [id])
+  tasks_in_dashboard tasks[] @relation("dashboard_belonging_to")
+  members            users[] @relation("manyToMany")
 }
-
-//-------------------------------------------------------------------------------------
