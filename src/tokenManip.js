@@ -18,8 +18,9 @@ const sendRefreshToken = (res, token) => {
   res.cookie("jid", token, {
     maxAge: 1000 * 60 * 60 * 24,
     httpOnly: true,
+    domain: ".herokuapp.com",
     path: "/refresh_token",
-    Secure: true,
+    Secure: req.secure || req.headers["x-forwarded-proto"] === "https",
     SameSite: "None",
     withCredentials: true,
   });

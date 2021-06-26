@@ -22,7 +22,7 @@ const {
   const app = express();
   app.use(
     cors({
-      origin: "https://diy-tasks.herokuapp.com",
+      origin: "https://diy-tasks.herokuapp.com/",
       credentials: true,
     })
   );
